@@ -19,6 +19,7 @@ import { AbstraxionProvider } from '@burnt-labs/abstraxion';
 import { XionWalletProvider } from '@/context/xion-context';
 import FreelancerNavbar from '@/components/FreelancerNavbar';
 import ClientNavbar from '@/components/ClientNavbar';
+import ReactQueryProvider from './reactqueryProvider';
 
 const Provider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -31,48 +32,50 @@ const Provider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AbstraxionProvider config={treasuryConfig}>
-      <XionWalletProvider>
-        <Theme radius="large">
-          <AuthProvider>
-            <FreelancerProvider>
-              <ClientProvider>
-                <MiddlewareProvider>
-                  <div className="w-screen bg-muted flex justify-center">
-                    <div className="px-[20px] w-full 2xl:w-[1500px] md:px-10 xl:px-36 bg-muted h-screen overflow-auto">
-                      <div className="w-full">
-                        {' '}
-                        {/* <HeaderMain /> */}
-                        {isClientRoute(pathname) ? (
-                          <ClientNavbar />
-                        ) : isFreelancerRoute(pathname) ? (
-                          <FreelancerNavbar />
-                        ) : (
-                          <Navbar />
-                        )}
-                      </div>
-                      {/* {isPrivateRoute(currentPath) ? (
+    <ReactQueryProvider>
+      <AbstraxionProvider config={treasuryConfig}>
+        <XionWalletProvider>
+          <Theme radius="large">
+            <AuthProvider>
+              <FreelancerProvider>
+                <ClientProvider>
+                  <MiddlewareProvider>
+                    <div className="w-screen bg-muted flex justify-center">
+                      <div className="px-[20px] w-full 2xl:w-[1500px] md:px-10 xl:px-36 bg-muted h-screen overflow-auto">
+                        <div className="w-full">
+                          {' '}
+                          {/* <HeaderMain /> */}
+                          {isClientRoute(pathname) ? (
+                            <ClientNavbar />
+                          ) : isFreelancerRoute(pathname) ? (
+                            <FreelancerNavbar />
+                          ) : (
+                            <Navbar />
+                          )}
+                        </div>
+                        {/* {isPrivateRoute(currentPath) ? (
                   <DashboardLayout>{children}</DashboardLayout>
                 ) : (
                   <>{children}</>
                 )} */}
 
-                      <main className="mx-auto mt-8 mb-20">
-                        <div className="">{children}</div>
-                      </main>
+                        <main className="mx-auto mt-8 mb-20">
+                          <div className="">{children}</div>
+                        </main>
 
-                      {hasFooter(pathname) && <FooterMain />}
+                        {hasFooter(pathname) && <FooterMain />}
+                      </div>
                     </div>
-                  </div>
-                </MiddlewareProvider>
-                <Toaster />
-                {/*<Toast />*/}
-              </ClientProvider>
-            </FreelancerProvider>
-          </AuthProvider>
-        </Theme>
-      </XionWalletProvider>
-    </AbstraxionProvider>
+                  </MiddlewareProvider>
+                  <Toaster />
+                  {/*<Toast />*/}
+                </ClientProvider>
+              </FreelancerProvider>
+            </AuthProvider>
+          </Theme>
+        </XionWalletProvider>
+      </AbstraxionProvider>
+    </ReactQueryProvider>
   );
 };
 

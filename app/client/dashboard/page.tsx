@@ -162,37 +162,37 @@ const Page = () => {
   const { getJobProposals } = useClient();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const fetchClientProfile = async () => {
-  //     if (!address) {
-  //       return;
-  //     }
+  useEffect(() => {
+    const fetchClientProfile = async () => {
+      if (!address) {
+        return;
+      }
 
-  //     const { data: client_profiles, error } = await supabase
-  //       .from('client_profiles')
-  //       .select('*')
-  //       .eq('wallet_address', address);
+      const { data: client_profiles, error } = await supabase
+        .from('client_profiles')
+        .select('*')
+        .eq('wallet_address', address);
 
-  //     if (error) {
-  //       console.error('Error fetching freelancer profile:', error);
-  //     } else {
-  //       console.log('Client profile:', client_profiles);
-  //     }
-  //     return client_profiles;
-  //   };
+      if (error) {
+        console.error('Error fetching freelancer profile:', error);
+      } else {
+        console.log('Client profile:', client_profiles);
+      }
+      return client_profiles;
+    };
 
-  //   const client_profile = fetchClientProfile();
+    const client_profile = fetchClientProfile();
 
-  //   client_profile.then((res) => {
-  //     if (res) {
-  //       router.push(ApplicationRoutes.CLIENT_DASHBOARD);
-  //     }
-  //     if (!res && isNewClientUser) {
-  //       router.push(ApplicationRoutes.CLIENT_SETUP_ONBOARDING);
-  //     }
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isNewClientUser, router]);
+    client_profile.then((res) => {
+      if (res) {
+        router.push(ApplicationRoutes.CLIENT_DASHBOARD);
+      }
+      if (!res && isNewClientUser) {
+        router.push(ApplicationRoutes.CLIENT_SETUP_ONBOARDING);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNewClientUser, router]);
 
   // Function to get proposal count for a job
   const getProposalCount = async (jobId: string): Promise<number> => {

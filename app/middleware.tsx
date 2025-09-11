@@ -44,6 +44,7 @@ export const isClientRoute = (path: string) => {
 export const freelancerRoutes = {
   DEFAULT: '/freelancer',
   WORKROOM: '/freelancer/workroom',
+  BOUNTY: '/freelancer/bounty',
   PROJECTS: '/freelancer/projects',
   PROPOSALS: '/freelancer/proposals',
   SUBMIT_PROPOSAL: '/freelancer/submit-proposal',

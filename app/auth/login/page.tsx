@@ -66,7 +66,7 @@ const Page = () => {
             message: arbitraryMessage,
             signature,
             pubkey: userSessionPubKey,
-            role: 'Freelancer',
+            role: 'Creator',
           }),
           headers: {
             'Content-Type': 'application/json',

@@ -96,7 +96,7 @@ const CompanySocials = ({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            // Authorization: `Bearer ${accessToken}`,y
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify(data),
         },
