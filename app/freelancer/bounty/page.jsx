@@ -286,39 +286,39 @@ const BountyPlatform = () => {
     );
   };
 
-  const LeaderboardCard = () => (
-    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-gray-900">Leaderboard</h3>
-        <button className="text-blue-600 text-sm hover:text-blue-700">
-          See all
-        </button>
-      </div>
+  // const LeaderboardCard = () => (
+  //   <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+  //     <div className="flex items-center justify-between mb-4">
+  //       <h3 className="font-semibold text-gray-900">Leaderboard</h3>
+  //       <button className="text-blue-600 text-sm hover:text-blue-700">
+  //         See all
+  //       </button>
+  //     </div>
 
-      <div className="space-y-3">
-        {leaderboard.map((user) => (
-          <div key={user.rank} className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-500 w-6">
-              #{user.rank}
-            </span>
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">
-                {user.name.charAt(0)}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 text-sm">{user.name}</p>
-              <p className="text-xs text-gray-500 truncate">{user.wallet}</p>
-            </div>
-            <div className="text-right">
-              <p className="font-medium text-gray-900 text-sm">{user.wins}</p>
-              <p className="text-xs text-gray-500">{user.earned}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  //     <div className="space-y-3">
+  //       {leaderboard.map((user) => (
+  //         <div key={user.rank} className="flex items-center gap-3">
+  //           <span className="text-sm font-medium text-gray-500 w-6">
+  //             #{user.rank}
+  //           </span>
+  //           <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+  //             <span className="text-white text-sm font-medium">
+  //               {user.name.charAt(0)}
+  //             </span>
+  //           </div>
+  //           <div className="flex-1 min-w-0">
+  //             <p className="font-medium text-gray-900 text-sm">{user.name}</p>
+  //             <p className="text-xs text-gray-500 truncate">{user.wallet}</p>
+  //           </div>
+  //           <div className="text-right">
+  //             <p className="font-medium text-gray-900 text-sm">{user.wins}</p>
+  //             <p className="text-xs text-gray-500">{user.earned}</p>
+  //           </div>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
 
   const SubmissionModal = ({ onClose, selectedBounty }) => (
     <div className="fixed inset-0 backdrop-blur-[7px] bg-[#0D1012B2] flex items-center justify-center p-4 z-50">
@@ -562,24 +562,28 @@ const BountyPlatform = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="">
           {/* Main Content */}
-          <div className="lg:col-span-2">
+          <div className="">
             <div className="">
-              {bounties?.map((bounty) => (
-                <BountyCard
-                  key={bounty.id}
-                  bounty={bounty}
-                  onClick={() => setSelectedBounty(bounty.id)}
-                />
-              ))}
+              {bounties?.length > 0 ? (
+                bounties?.map((bounty) => (
+                  <BountyCard
+                    key={bounty.id}
+                    bounty={bounty}
+                    onClick={() => setSelectedBounty(bounty.id)}
+                  />
+                ))
+              ) : (
+                <p className="text-center py-[50px]">No Bounties created</p>
+              )}
             </div>
           </div>
 
           {/* Sidebar */}
-          <div>
+          {/* <div>
             <LeaderboardCard />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

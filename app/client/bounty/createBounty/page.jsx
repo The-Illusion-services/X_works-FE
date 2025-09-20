@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Plus, X } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
+import Link from 'next/link';
 
 const MultiStepForm = () => {
   const { accessToken } = useAuth();
@@ -720,13 +721,12 @@ const MultiStepForm = () => {
       <div className="bg-white border-b px-6 py-4">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleBack}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-            >
-              <ChevronLeft size={20} />
-              Back
-            </button>
+            <Link href="/client/bounty">
+              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-800">
+                <ChevronLeft size={20} />
+                Back
+              </button>
+            </Link>
             <h1 className="text-xl font-bold">
               <span className="text-blue-600">AT</span>work
             </h1>

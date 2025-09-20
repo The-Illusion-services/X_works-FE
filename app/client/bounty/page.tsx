@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { IoIosSearch } from 'react-icons/io';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
+// import { IoIosSearch } from 'react-icons/io';
+// import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 import {
   Table,
   TableBody,
@@ -13,126 +13,107 @@ import {
   Chip,
 } from '@mui/material';
 import BountyDetailModal from './BountyDetailModal';
+import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
+
+type Bounty = {
+  id: string;
+  title: string;
+  status: string;
+  category: string;
+  prize_type: number;
+  start_date: string;
+  end_date: string;
+  first_place_amount: string;
+  second_place_amount: string;
+  third_place_amount: string;
+  problem_statement: string;
+  skills_required: [];
+};
+
+type MyBountiesResponse = {
+  total_bounties: number;
+  bounties: Bounty[];
+};
 
 const Page = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
+  const { accessToken } = useAuth();
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const totalPages = 10;
 
-  const MyBounties = [
-    {
-      status: 'Open',
-      title: 'Create Thread: SpineDAO and the Healthcare Revolution in DeSci',
-      role: 'Design',
-      date: 'June 20, 2025',
-      tags: ['Web Design', 'UI/UX Design', 'Prototyping'],
-      funding: '50.5 ATOM',
-      duration: 'Due in 4d',
-    },
-    {
-      status: 'Closed',
-      title: 'Airbills Pay x Fiat Router — Product Rebrand Bounty',
-      role: 'Front-end',
-      date: 'June 20, 2025',
-      tags: ['Web Design', 'UI/UX Design', 'Prototyping'],
-      funding: '50.5 ATOM',
-      duration: 'Due in 4d',
-    },
-    {
-      status: 'Open',
-      title: 'MetaHealth — Patient Dashboard Redesign',
-      role: 'UI/UX',
-      date: 'July 2, 2025',
-      tags: ['Product Design', 'Wireframing', 'User Research'],
-      funding: '72 ATOM',
-      duration: 'Due in 7d',
-    },
-  ];
+  const [selectedBounty, setSelectedBounty] = useState<Bounty | null>(null);
 
-  const tableData = [
-    {
-      title: 'Solana Summer Thread Contest',
-      status: 'Open',
-      category: 'Content Creation',
-      submissions: 49,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'Build a Token Tracker',
-      status: 'Judging',
-      category: 'Development',
-      submissions: 40,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'UI Redesign Challenge',
-      status: 'Scheduled',
-      category: 'UI/UX Design',
-      submissions: 40,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'Create Thread: SpineDAO and the Healthcare Revolution',
-      status: 'Closed',
-      category: 'Content Creation',
-      submissions: 3,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'Airbills Pay x Fiat Router — Product Rebrand Bounty',
-      status: 'In Progress',
-      category: 'UI/UX Design',
-      submissions: 49,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'UI Redesign Challenge',
-      status: 'Scheduled',
-      category: 'UI/UX Design',
-      submissions: 40,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-    {
-      title: 'Solana Summer Thread Contest',
-      status: 'Scheduled',
-      category: 'UI/UX Design',
-      submissions: 2,
-      startDate: 'July 10',
-      endDate: 'July 24',
-    },
-  ];
+  // const statusColors: Record<
+  //   string,
+  //   'published' | 'error' | 'draft' | 'info' | 'default'
+  // > = {
+  //   Open: 'published',
+  //   Judging: 'draft',
+  //   Scheduled: 'info',
+  //   Closed: 'error',
+  //   'In Progress': 'published',
+  // };
 
-  const statusColors: Record<
-    string,
-    'success' | 'error' | 'warning' | 'info' | 'default'
-  > = {
-    Open: 'success',
-    Judging: 'warning',
-    Scheduled: 'info',
-    Closed: 'error',
-    'In Progress': 'success',
+  const fetchMyBounties = async () => {
+    try {
+      const response = await fetch(
+        `https://x-works-be.onrender.com/api/my-bounty/`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch bounties: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      throw error;
+    }
   };
+
+  const { data: myBounties } = useQuery<MyBountiesResponse>({
+    queryKey: ['my-bounties'],
+    queryFn: fetchMyBounties,
+  });
 
   return (
     <>
-      <BountyDetailModal />
+      {selectedBounty && (
+        <BountyDetailModal
+          bounty={selectedBounty}
+          onClose={() => setSelectedBounty(null)}
+        />
+      )}
       <div>
-        <h2 className="text-[40px] font-semibold tracking-[-2px] leading-[40px]">
-          My Bounties
-        </h2>
-        <p className="text-[14px] font-medium text-[#7E8082]">
-          You’ve received 14 new proposals across your posted jobs.
-        </p>
+        <div className="flex justify-between items-end">
+          <div className="">
+            <h2 className="text-[40px] font-semibold tracking-[-2px] leading-[40px]">
+              My Bounties
+            </h2>
+            <p className="text-[14px] font-medium text-[#7E8082]">
+              You’ve created {myBounties?.total_bounties} bounties so far.
+            </p>
+          </div>
+          <Link href="bounty/createBounty">
+            <div className="bg-[#1A73E8]  h-[45px] w-[150px] font-semibold rounded-[8px] text-white text-[14px] grid place-items-center">
+              Create New Bounty
+            </div>
+          </Link>
+        </div>
         <div className="bg-white w-full rounded-[8px] py-[20px] mt-[20px]">
           <h3 className="text-[16px] text-[#18181B] font-semibold mx-[20px]">
-            Proposal
+            Bounties
           </h3>
-          <div className="flex justify-between mt-[20px] px-[20px]">
+          {/* <div className="flex justify-between mt-[20px] px-[20px]">
             <div className="border-[1px] border-[#E4E4E7] rounded-[12px] h-[36px] w-[320px] flex items-center">
               <div className="w-[36px] h-full grid place-items-center">
                 <IoIosSearch className="text-[#868FA0] text-[18px]" />
@@ -160,52 +141,7 @@ const Page = () => {
                 </select>
               </div>
             </div>
-          </div>
-          {/* First Page Format */}
-          {/* <div className="flex flex-col mt-[10px] px-[20px]">
-          {MyBounties?.map((myBounty, i) => {
-            return (
-              <div
-                className="flex flex-col p-[16px] rounded-[14px] hover:bg-[#F4F4F5] transition-all group"
-                key={i}
-              >
-                <div
-                  className={`${myBounty.status === 'Open' ? 'bg-[#10B9810D] text-[#10B981]' : 'bg-[#EF44440D] text-[#EF4444]'} font-semibold px-[8px] py-[4px] rounded-[12px] w-max text-[12px]`}
-                >
-                  {myBounty.status}
-                </div>
-                <h2 className="text-[18px] font-semibold mt-[5px] text-[#18181B]">
-                  {myBounty.title}
-                </h2>
-                <p className="text-[#7E8082] text-[14px]">
-                  {myBounty.role} ・ {myBounty.date}
-                </p>
-                <div className="flex mt-[20px] gap-[10px]">
-                  {myBounty.tags.map((tag, i) => {
-                    return (
-                      <div
-                        className="bg-[#F4F4F5] h-[32px] rounded-full text-[12px] text-[#545756] px-[16px] py-[8px] group-hover:bg-white transition-all"
-                        key={i}
-                      >
-                        {tag}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="flex gap-[30px] items-center mt-[20px]">
-                  <div className="text-[#545756] text-[14px]">
-                    <span className="text-[#7E8082] mr-[5px]">Funding:</span>
-                    {myBounty.funding}
-                  </div>
-                  <div className="text-[#545756] text-[14px]">
-                    <span className="text-[#7E8082] mr-[5px]">Duration:</span>
-                    Due in {myBounty.duration}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div> */}
+          </div> */}
 
           {/* Table Format */}
           <div className="px-[20px] mt-[15px]">
@@ -225,9 +161,9 @@ const Page = () => {
                     <TableCell sx={{ fontWeight: 600, borderBottom: 'none' }}>
                       Category
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 600, borderBottom: 'none' }}>
+                    {/* <TableCell sx={{ fontWeight: 600, borderBottom: 'none' }}>
                       Submissions
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell sx={{ fontWeight: 600, borderBottom: 'none' }}>
                       Start Date
                     </TableCell>
@@ -238,10 +174,12 @@ const Page = () => {
                 </TableHead>
 
                 <TableBody>
-                  {tableData.map((row, index) => (
+                  {myBounties?.bounties?.map((row, index) => (
                     <TableRow
                       key={index}
+                      onClick={() => setSelectedBounty(row)}
                       sx={{
+                        cursor: 'pointer',
                         '& tr:first-of-type td': {
                           borderTop: 'none',
                         },
@@ -259,7 +197,6 @@ const Page = () => {
                       <TableCell>
                         <Chip
                           label={row.status}
-                          color={statusColors[row.status] || 'default'}
                           variant="outlined"
                           size="small"
                           sx={{
@@ -297,16 +234,16 @@ const Page = () => {
                         />
                       </TableCell>
                       <TableCell>{row.category}</TableCell>
-                      <TableCell>{row.submissions}</TableCell>
-                      <TableCell>{row.startDate}</TableCell>
-                      <TableCell>{row.endDate}</TableCell>
+                      {/* <TableCell>{row.submissions}</TableCell> */}
+                      <TableCell>{row.start_date}</TableCell>
+                      <TableCell>{row.end_date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
-          <div className="flex text-[#18181B] px-[20px] justify-between items-center font-medium text-[14px] pt-[12px] pb-[16px] mt-[10px] border-t-[#ECECEC] border-t-[1px]">
+          {/* <div className="flex text-[#18181B] px-[20px] justify-between items-center font-medium text-[14px] pt-[12px] pb-[16px] mt-[10px] border-t-[#ECECEC] border-t-[1px]">
             <div className="border-[#D5D7DA] border-[1px] h-[36px] w-[107px] rounded-[8px] flex items-center justify-center gap-[5px]">
               <FaArrowLeft />
               Previous
@@ -324,7 +261,7 @@ const Page = () => {
                   return (
                     <button
                       key={page}
-                      onClick={() => handlePageClick(page)}
+                      onClick={() => setCurrentPage(page)}
                       className={`px-3 py-1 rounded-md ${
                         currentPage === page
                           ? 'bg-[#F4F5FA] text-[#1A73E8] font-medium'
@@ -355,7 +292,7 @@ const Page = () => {
               Next
               <FaArrowRight />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
