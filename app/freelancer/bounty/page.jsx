@@ -240,7 +240,7 @@ const BountyPlatform = () => {
     }
     return (
       <div
-        className="bg-white rounded-lg p-[16px] transition-all hover:bg-[#F4F4F5] cursor-pointer h-[164px] group"
+        className="bg-white rounded-lg px-[10px] py-[16px] lg:px-[16px] lg:py-[16px] transition-all hover:bg-[#F4F4F5] cursor-pointer min-h-[164px] group"
         onClick={() => onClick(bounty)}
       >
         <div className="flex items-start gap-4">
@@ -524,9 +524,9 @@ const BountyPlatform = () => {
         </div>
       </div>
 
-      <div className="rounded-[14px] bg-white mt-[30px] p-6">
+      <div className="rounded-[14px] bg-white mt-[30px] px-2 py-2 lg:py-6 lg:px-6">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-4 mb-6">
+        {/* <div className="flex flex-wrap items-center gap-4 mb-6">
           <div className="flex gap-[10px]">
             {tabs.map((tab) => (
               <button
@@ -560,14 +560,14 @@ const BountyPlatform = () => {
               Filter
             </button>
           </div>
-        </div>
+        </div> */}
 
         <div className="">
           {/* Main Content */}
           <div className="">
             <div className="">
-              {bounties?.length > 0 ? (
-                bounties?.map((bounty) => (
+              {bounties?.results?.length > 0 ? (
+                bounties?.results?.map((bounty) => (
                   <BountyCard
                     key={bounty.id}
                     bounty={bounty}

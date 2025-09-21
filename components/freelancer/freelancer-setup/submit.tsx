@@ -51,8 +51,6 @@ const SubmitDetails = ({
     {},
   );
 
-  console.log('access token: ', accessToken);
-
   // Get data from form context
   const formData = getValues();
 
@@ -163,11 +161,10 @@ const SubmitDetails = ({
       setTimeout(() => {
         setIsNewFreelanceUser(false);
         console.log('on success: successful');
-        router.push(ApplicationRoutes.FREELANCER_DASHBOARD);
+        router.push(ApplicationRoutes.FREELANCER_BOUNTY);
       }, 3000);
     } catch (error) {
       console.error('Error submitting profile:', error);
-      // You might want to show an error message to the user here
     }
   };
 

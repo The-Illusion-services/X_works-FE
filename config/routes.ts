@@ -1,11 +1,13 @@
 export const ApplicationRoutes = {
   HOME: '/',
+  LOGIN: '/auth/login',
   DASHBOARD: '/dashboard',
   JOIN: '/join',
   FREELANCER_SETUP: '/freelancer/setup',
   FREELANCER_SETUP_ONBOARDING: '/freelancer/setup/onboarding',
   FREELANCER_DASHBOARD: '/freelancer',
   FREELANCER_SUBMIT_PROPOSAL: '/freelancer/submit-proposal',
+  FREELANCER_BOUNTY: '/freelancer/bounty',
   CLIENT_SETUP_ONBOARDING: '/client/onboarding',
   CLIENT: '/client',
   CLIENT_DASHBOARD: '/client/dashboard',

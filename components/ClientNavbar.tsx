@@ -212,7 +212,9 @@ export default function ClientNavbar() {
           size={'3'}
           className={'cursor-pointer'}
         >
-          <SegmentedControl.Item value="dashboard">
+          {/* <SegmentedControl.Item
+            value="dashboard"
+          >
             <Flex align="center" gap="2">
               <DashboardIcon />
               <Text size={'2'}>Dashboard</Text>
@@ -229,7 +231,7 @@ export default function ClientNavbar() {
               <ProposalIcon />
               <Text size={'2'}>Proposal</Text>
             </Flex>
-          </SegmentedControl.Item>
+          </SegmentedControl.Item> */}
           <SegmentedControl.Item value="bounty">
             <Flex align="center" gap="2">
               <ProposalIcon />

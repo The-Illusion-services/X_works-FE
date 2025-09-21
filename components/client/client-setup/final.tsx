@@ -1,8 +1,21 @@
 'use client';
+import { ApplicationRoutes } from '@/config/routes';
 import UserCheck from '@/icons/client/user-check-01.svg';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const FinalDetails = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push(ApplicationRoutes.CLIENT_BOUNTY);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
     <div className="w-full mt-32 flex justify-center items-center">
       <main className="bg-white w-[542px] rounded-[14px] py-[40px] px-[16px] flex flex-col items-center text-center gap-y-8">

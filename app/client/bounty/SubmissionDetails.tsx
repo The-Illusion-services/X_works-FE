@@ -1,11 +1,16 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 
 type User = {
   id: string;
   name: string;
+  application_id: string;
   application_text: string;
+  placement: string;
+  is_winner: boolean;
   applied_at: string;
   wallet: string;
   image?: string;
@@ -39,8 +44,10 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
   onAddToWinnersList,
 }) => {
   const [currentStatus, setCurrentStatus] = useState(user.status || 'pending');
+  const queryClient = useQueryClient();
+  const { accessToken } = useAuth();
   const [showRankDropdown, setShowRankDropdown] = useState(false);
-  const [selectedRank, setSelectedRank] = useState('1st Place');
+  const [selectedRank, setSelectedRank] = useState('first');
   const [isAssigningRank, setIsAssigningRank] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -53,11 +60,12 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
       setSuccessMessage('');
 
       const response = await fetch(
-        `https://x-works-be.onrender.com/api/bounty/${user.bountyId}/application/${user.id}/select-winner/`,
+        `https://x-works-be.onrender.com/api/bounty/${user.bountyId}/application/${user.application_id}/select-winner/`,
         {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             is_winner: true,
@@ -77,8 +85,9 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
       setCurrentStatus('winner');
       setSuccessMessage(`Successfully assigned ${placement}!`);
 
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(''), 3000);
+      queryClient.invalidateQueries({ queryKey: ['bounty-details'] });
+      onClose();
     } catch (error) {
       console.error('Error assigning placement:', error);
       setErrorMessage('Failed to assign placement. Please try again.');
@@ -91,7 +100,7 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
 
   const handleMarkAsWinner = async () => {
     try {
-      await assignPlacement('1st Place'); // Default to 1st place when marking as winner
+      await assignPlacement('first'); // Default to 1st place when marking as winner
       onMarkAsWinner?.(user.id);
     } catch (error) {
       console.error('Error marking as winner:', error);
@@ -124,7 +133,7 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
     }
   };
 
-  const rankOptions = ['1st Place', '2nd Place', '3rd Place', 'Unassign Place'];
+  const rankOptions = ['first', 'second', 'third', 'Unassign Place'];
 
   return (
     <div
@@ -194,26 +203,19 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
 
           {/* Project Link */}
           <div className="mb-6">
-            <h4 className="font-medium text-gray-900 mb-2">Project Link</h4>
-            <div className="flex items-center gap-2">
-              <a
-                href={`https://${user.projectLink || 'behance.folakemalik.com'}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 text-sm"
-              >
-                {user.projectLink || 'www.behance.folakemalik.com'}
-              </a>
-              <button className="text-gray-400 hover:text-gray-600">↗</button>
+            <h4 className="font-medium text-gray-900">Assigned Placement</h4>
+            <div className="flex items-center gap-2 capitalize text-sm">
+              {user.is_winner
+                ? `${user.placement} Place`
+                : 'No position assigned'}
             </div>
           </div>
 
           {/* Description */}
           <div className="mb-6">
-            <h4 className="font-medium text-gray-900 mb-2">Description</h4>
+            <h4 className="font-medium text-gray-900">Description</h4>
             <p className="text-sm text-gray-700 leading-relaxed">
-              {user.description ||
-                'I designed a ghostly-themed NFT card UI using colour palette and elements from the Rust Undead collection. Let me know what you think about it'}
+              {user.application_text}
             </p>
           </div>
 
@@ -264,17 +266,15 @@ const SubmissionDetail: React.FC<SubmissionDetailProps> = ({
                   disabled={isAssigningRank}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {isAssigningRank
-                    ? 'Processing...'
-                    : 'Mark as Winner (1st Place)'}
+                  {isAssigningRank ? 'Processing...' : 'Mark as Winner (first)'}
                 </button>
-                <button
+                {/* <button
                   onClick={handleDisqualify}
                   disabled={isAssigningRank}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50"
                 >
                   Disqualify
-                </button>
+                </button> */}
               </>
             )}
 

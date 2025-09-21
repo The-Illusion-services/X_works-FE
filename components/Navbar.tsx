@@ -17,6 +17,7 @@ export default function Navbar() {
   const isClientDashboardRoute = pathname.endsWith(
     ApplicationRoutes.CLIENT_DASHBOARD,
   );
+  const isHome = pathname.endsWith(ApplicationRoutes.HOME);
   const isClientProjectsRoute = pathname.endsWith(
     ApplicationRoutes.CLIENT_PROJECTS,
   );
@@ -60,6 +61,10 @@ export default function Navbar() {
     }
   };
 
+  const openAuth = () => {
+    router.push(ApplicationRoutes.LOGIN);
+  };
+
   return (
     <Flex
       position={'sticky'}
@@ -81,8 +86,11 @@ export default function Navbar() {
 
       <Flex align="center" gap="5">
         {!isConnected ? (
-          <Button onClick={handleConnect} className="text-white">
-            Connect Wallet
+          <Button
+            onClick={() => (isHome ? openAuth() : handleConnect())}
+            className="text-white"
+          >
+            {isHome ? 'Get Started' : 'Connect Wallet'}
           </Button>
         ) : (
           /*<Link href={ApplicationRoutes.JOIN}>

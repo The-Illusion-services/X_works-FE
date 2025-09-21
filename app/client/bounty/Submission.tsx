@@ -7,7 +7,10 @@ import SubmissionDetail from './SubmissionDetails';
 type Submission = {
   id: string;
   name: string;
+  application_id: string;
   application_text: string;
+  placement: string;
+  is_winner: boolean;
   applied_at: string;
   wallet: string;
   image?: string;
