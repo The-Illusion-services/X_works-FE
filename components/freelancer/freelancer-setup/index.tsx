@@ -211,7 +211,7 @@ const FreeLancerSetupSteps = () => {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {getStepContent(activeStep)}
 
-          <div className="flex justify-center space-x-[20px]">
+          <div className="hidden justify-center space-x-[20px]">
             {activeStep > 1 && (
               <Button
                 type="button"
