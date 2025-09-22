@@ -34,7 +34,6 @@ const Page = () => {
   const [, setShow] = useModal();
   const {
     data: { bech32Address },
-
     isConnected,
   } = useAbstraxionAccount();
 
@@ -174,7 +173,7 @@ const Page = () => {
     if (client?.granteeAddress) {
       handleSign(client?.granteeAddress);
     }
-  }, [isConnected, client?.granteeAddress]);
+  });
 
   // Reset signing state when disconnected
   useEffect(() => {
@@ -269,7 +268,7 @@ const Page = () => {
               }}
               disabled={isButtonDisabled}
               className={`
-                bg-primary text-black lg:w-full p-2 text-white rounded-md 
+                bg-primary lg:w-full p-2 text-white rounded-md 
                 transition-colors duration-300 flex items-center justify-center
                 ${
                   isButtonDisabled

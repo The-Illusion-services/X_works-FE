@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { StepperFormValues } from '@/hooks/hook-stepper';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { useXionWallet } from '@/context/xion-context';
 import { freelancerProfileService } from '@/services/freelancer-profile';
 import { supabase } from '@/lib/supabase';
@@ -31,7 +31,7 @@ export default function Page() {
     mode: 'onTouched',
   });
   const router = useRouter();
-  const { isNewFreelanceUser } = useAuth();
+  const { isNewFreelanceUser } = useAuthContext();
 
   const { toast } = useToast();
 
@@ -187,8 +187,6 @@ export default function Page() {
           <SubmitDetails
             handleBack={handleBack}
             setActiveStep={setActiveStep}
-            step={step}
-            onSubmit={handleSubmit(onSubmit)}
           />
         );
       default:
@@ -217,7 +215,7 @@ export default function Page() {
       <FormProvider {...methods}>
         {getStepContent(activeStep)}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="hidden flex justify-center space-x-[20px]">
+          <div className="flex justify-center space-x-[20px]">
             {activeStep > 1 && (
               <Button
                 type="button"

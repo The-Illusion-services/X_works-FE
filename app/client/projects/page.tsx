@@ -13,7 +13,7 @@ import {
 import { Flex } from '@radix-ui/themes';
 import { ExpertCardType } from '@/types';
 import { useXionWallet } from '@/context/xion-context';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { useJobContract } from '@/hooks/useJobContract';
 import { useClient } from '@/context/client-context';
 import {
@@ -134,7 +134,7 @@ const dummyClient: ExpertCardType[] = [
 
 const Page = () => {
   const editJob = useRef<HTMLDivElement>(null);
-  const { hasJob } = useAuth();
+  const { hasJob } = useAuthContext();
   const confirmPayment = useRef<HTMLDivElement>(null);
   const closeConfirmPayment = useRef<HTMLDivElement>(null);
   const terminateContractModal = useRef<HTMLDivElement>(null);
@@ -375,7 +375,7 @@ const Page = () => {
       <main className="mt-32 mb-20">
         <div className="app-container">
           <div className="flex justify-end items-center mb-5">
-            <div className="hidden flex items-center">
+            <div className="flex items-center">
               {isConnected && (
                 <div className="flex items-center gap-2">
                   <div className="flex items-center px-3 py-1 bg-green-50 rounded-lg">
@@ -574,8 +574,8 @@ const Page = () => {
                                 project details and expectations
                               </li>
                               <li>
-                                Monitor project progress in this Active
-                                Projects section
+                                Monitor project progress in this Active Projects
+                                section
                               </li>
                               <li>
                                 Make payment when the freelancer completes their
@@ -584,8 +584,8 @@ const Page = () => {
                             </ul>
                             <p className="text-xs text-blue-600 mt-3 italic">
                               Note: The freelancer will mark the job as complete
-                              when finished. You&apos;ll be able to review the work
-                              and make payment.
+                              when finished. You&apos;ll be able to review the
+                              work and make payment.
                             </p>
                           </div>
                         </div>
@@ -1008,7 +1008,13 @@ const Page = () => {
               Terminate Contract
             </p>
 
-            <Image width={100} height={100} className={"h-full w-full"} src="/images/client/client.png" alt="client" />
+            <Image
+              width={100}
+              height={100}
+              className={'h-full w-full'}
+              src="/images/client/client.png"
+              alt="client"
+            />
             <span className="text-sm text-[#7E8082]">Freelancer</span>
 
             <div className=" flex justify-center">
@@ -1025,7 +1031,7 @@ const Page = () => {
 
           <div className="mb-3 flex space-x-3">
             <DialogClose className="w-full">
-              <Button className="text-white w-full mt-6 border border-gray-300 bg-white text-primary hover:bg-white focus:bg-white">
+              <Button className="w-full mt-6 border border-gray-300 bg-white text-primary hover:bg-white focus:bg-white">
                 Cancel
               </Button>
             </DialogClose>

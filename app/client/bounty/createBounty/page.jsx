@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Plus, X } from 'lucide-react';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import Link from 'next/link';
 
 const MultiStepForm = () => {
-  const { accessToken } = useAuth();
+  const { accessToken } = useAuthContext();
   const [currentStep, setCurrentStep] = useState(1);
   const [newSkill, setNewSkill] = useState('');
   const [formData, setFormData] = useState({

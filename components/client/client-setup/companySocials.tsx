@@ -12,8 +12,7 @@ import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { LucideChevronLeft, LucideChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 
 type CompanySocialsProps = {
   handleBack: () => void;
@@ -43,8 +42,7 @@ const CompanySocials = ({
 }: CompanySocialsProps) => {
   const { control, watch, setValue, getValues } =
     useFormContext<CompanyOnboardingFormValues>();
-  const { accessToken } = useAuth();
-  const router = useRouter();
+  const { accessToken } = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {

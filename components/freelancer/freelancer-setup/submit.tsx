@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { Button } from '../../ui/button';
 import { StepperFormValues } from '@/hooks/hook-stepper';
 import { ApplicationRoutes } from '@/config/routes';
@@ -11,12 +11,11 @@ import UploadSuccess from '@/icons/freelance/upload-success';
 import Image from 'next/image';
 import { LucideChevronLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAuth } from '@/hooks/useAuth';
 
 type SubmitDetailsProps = {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  step: number;
   handleBack: () => void;
-  onSubmit: () => Promise<void>;
 };
 
 interface LocalStorageData {
@@ -44,7 +43,8 @@ const SubmitDetails = ({
 }: SubmitDetailsProps) => {
   const router = useRouter();
   const successModal = useRef<HTMLDivElement>(null);
-  const { setIsNewFreelanceUser, accessToken } = useAuth();
+  const { accessToken } = useAuth();
+  const { setIsNewFreelanceUser } = useAuthContext();
   const { getValues } = useFormContext<StepperFormValues>();
 
   const [localStorageData, setLocalStorageData] = useState<LocalStorageData>(

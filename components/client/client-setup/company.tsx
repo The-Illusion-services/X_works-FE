@@ -112,7 +112,7 @@ export default function CompanyDetails({
       setPreviewImageUrl(newPreviewUrl);
       setImageFile(profilePicture);
     }
-  }, [profilePicture]);
+  }, [profilePicture, previewImageUrl]);
 
   // This form instance is no longer needed as we've defined it above
   // const form = useForm<z.infer<typeof FormSchema>>({
@@ -260,7 +260,7 @@ export default function CompanyDetails({
                 </Box>
               </Flex>
 
-              <div className="bg-background mx-auto relative rounded-xl py-5 px-3 lg:p-10 lg:pb-30 mt-10 relative">
+              <div className="bg-background mx-auto relative rounded-xl py-5 px-3 lg:p-10 lg:pb-30 mt-10">
                 {/* Display a summary of errors at the top of the form */}
                 {Object.keys(errors).length > 0 && (
                   <Callout.Root color="red" className={'mb-8'}>

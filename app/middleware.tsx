@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { ApplicationRoutes } from '@/config/routes';
 
 // Define private routes that require authentication
@@ -62,7 +62,7 @@ export const isFreelancerRoute = (path: string) => {
 const MiddlewareProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuthContext();
 
   useEffect(() => {
     // Check if current route is private and user is not logged in

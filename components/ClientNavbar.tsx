@@ -8,7 +8,7 @@ import {
   Skeleton,
   Text,
 } from '@radix-ui/themes';
-import DashboardIcon from '@/icons/navbar/DashboardIcon';
+// import DashboardIcon from '@/icons/navbar/DashboardIcon';
 import ProjectIcon from '@/icons/navbar/ProjectIcon';
 import ProposalIcon from '@/icons/navbar/ProposalIcon';
 import SettingsIcon from '@/icons/navbar/SettingsIcon';

@@ -20,7 +20,7 @@ import WalletIcon from '@/icons/wallet';
 import ProjectIcon from '@/icons/navbar/ProjectIcon';
 import ProposalIcon from '@/icons/navbar/ProposalIcon';
 import { useXionWallet } from '@/context/xion-context';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { useJobContract } from '@/hooks/useJobContract';
 import { useClient } from '@/context/client-context';
 import {
@@ -142,7 +142,7 @@ const DummyDashboardCards = [
 
 const Page = () => {
   const editJob = useRef<HTMLDivElement>(null);
-  const { hasJob, isNewClientUser } = useAuth();
+  const { hasJob, isNewClientUser } = useAuthContext();
   const confirmPayment = useRef<HTMLDivElement>(null);
   const closeConfirmPayment = useRef<HTMLDivElement>(null);
   const terminateContractModal = useRef<HTMLDivElement>(null);
@@ -185,7 +185,7 @@ const Page = () => {
 
     client_profile.then((res) => {
       if (res) {
-        router.push(ApplicationRoutes.CLIENT_DASHBOARD);
+        router.push(ApplicationRoutes.CLIENT_BOUNTY);
       }
       if (!res && isNewClientUser) {
         router.push(ApplicationRoutes.CLIENT_SETUP_ONBOARDING);
@@ -440,7 +440,7 @@ const Page = () => {
       <main className="mt-32 mb-20">
         <div className="app-container">
           <div className="flex justify-end items-center mb-5">
-            <div className="hidden flex items-center">
+            <div className="flex items-center">
               {isConnected && (
                 <div className="flex items-center gap-2">
                   <div className="flex items-center px-3 py-1 bg-green-50 rounded-lg">
@@ -1096,7 +1096,7 @@ const Page = () => {
 
           <div className="mb-3 flex space-x-3">
             <DialogClose className="w-full">
-              <Button className="text-white w-full mt-6 border border-gray-300 bg-white text-primary hover:bg-white focus:bg-white">
+              <Button className="w-full mt-6 border border-gray-300 bg-white text-primary hover:bg-white focus:bg-white">
                 Cancel
               </Button>
             </DialogClose>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { Button } from '../../ui/button';
 import { StepperFormValues } from '@/hooks/hook-stepper';
 import { format } from 'date-fns';
@@ -24,7 +24,7 @@ const SubmitDetails = ({
 }: SubmitDetailsProps) => {
   const router = useRouter();
   const successModal = useRef<HTMLDivElement>(null);
-  const { setIsNewFreelanceUser } = useAuth();
+  const { setIsNewFreelanceUser } = useAuthContext();
   const { getValues } = useFormContext<StepperFormValues>();
   const formData = getValues();
 

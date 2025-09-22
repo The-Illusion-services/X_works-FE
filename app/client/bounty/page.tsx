@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { IoIosSearch } from 'react-icons/io';
 // import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 import {
@@ -15,6 +15,11 @@ import {
 import BountyDetailModal from './BountyDetailModal';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import { ApplicationRoutes } from '@/config/routes';
+import { useRouter } from 'next/navigation';
+import { useXionWallet } from '@/context/xion-context';
+import { supabase } from '@/lib/supabase';
+import { useAuthContext } from '@/context/auth-context';
 import { useAuth } from '@/hooks/useAuth';
 
 type Bounty = {
@@ -39,21 +44,42 @@ type MyBountiesResponse = {
 
 const Page = () => {
   const { accessToken } = useAuth();
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const totalPages = 10;
+  const { address } = useXionWallet();
+  const { isNewClientUser } = useAuthContext();
+  const router = useRouter();
 
   const [selectedBounty, setSelectedBounty] = useState<Bounty | null>(null);
+  useEffect(() => {
+    const fetchClientProfile = async () => {
+      if (!address) {
+        return;
+      }
 
-  // const statusColors: Record<
-  //   string,
-  //   'published' | 'error' | 'draft' | 'info' | 'default'
-  // > = {
-  //   Open: 'published',
-  //   Judging: 'draft',
-  //   Scheduled: 'info',
-  //   Closed: 'error',
-  //   'In Progress': 'published',
-  // };
+      const { data: client_profiles, error } = await supabase
+        .from('client_profiles')
+        .select('*')
+        .eq('wallet_address', address);
+
+      if (error) {
+        console.error('Error fetching freelancer profile:', error);
+      } else {
+        console.log('Client profile:', client_profiles);
+      }
+      return client_profiles;
+    };
+
+    const client_profile = fetchClientProfile();
+
+    client_profile.then((res) => {
+      if (res) {
+        router.push(ApplicationRoutes.CLIENT_BOUNTY);
+      }
+      if (!res && isNewClientUser) {
+        router.push(ApplicationRoutes.CLIENT_SETUP_ONBOARDING);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNewClientUser, router]);
 
   const fetchMyBounties = async () => {
     try {
@@ -100,7 +126,9 @@ const Page = () => {
               My Bounties
             </h2>
             <p className="text-[14px] font-medium text-[#7E8082]">
-              You’ve created {myBounties?.total_bounties} bounties so far.
+              You&apos;ve created {myBounties?.total_bounties} bount
+              {myBounties && myBounties?.total_bounties > 1 ? 'ies' : 'y'} so
+              far.
             </p>
           </div>
           <Link href="bounty/createBounty">

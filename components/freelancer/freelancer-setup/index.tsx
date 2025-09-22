@@ -5,9 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '../../ui/alert';
 
-import {
-  StepperFormValues,
-} from '@/hooks/hook-stepper';
+import { StepperFormValues } from '@/hooks/hook-stepper';
 
 import SkillsDetails from './skills';
 import BioDetails from './bio';
@@ -17,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '../../ui/button';
 import NewUsersStartPage from './new-user-start-page';
 import SubmitDetails from './submit';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { useXionWallet } from '@/context/xion-context';
 import { freelancerProfileService } from '@/services/freelancer-profile';
 import { supabase } from '@/lib/supabase';
@@ -33,7 +31,7 @@ const FreeLancerSetupSteps = () => {
   const methods = useForm<StepperFormValues>({
     mode: 'onTouched',
   });
-  const { isNewFreelanceUser } = useAuth();
+  const { isNewFreelanceUser } = useAuthContext();
 
   const { toast } = useToast();
 
@@ -102,7 +100,6 @@ const FreeLancerSetupSteps = () => {
         ...formData,
         profile_picture: profilePictureUrl,
       };
-
 
       // @ts-expect-error "Negligible error"
       await freelancerProfileService.createProfile(profileData, address);
@@ -184,8 +181,7 @@ const FreeLancerSetupSteps = () => {
         return (
           <SubmitDetails
             setActiveStep={setActiveStep}
-            step={step}
-            onSubmit={handleSubmit(onSubmit)}
+            handleBack={handleBack}
           />
         );
       default:
@@ -215,7 +211,7 @@ const FreeLancerSetupSteps = () => {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {getStepContent(activeStep)}
 
-          <div className="hidden flex justify-center space-x-[20px]">
+          <div className="flex justify-center space-x-[20px]">
             {activeStep > 1 && (
               <Button
                 type="button"

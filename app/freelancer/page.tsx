@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { ApplicationRoutes } from '@/config/routes';
 import { supabase } from '@/lib/supabase';
 import { useEffect } from 'react';
-import { useAuth } from '@/context/auth-context';
+import { useAuthContext } from '@/context/auth-context';
 import { useRouter } from 'next/navigation';
 import { useXionWallet } from '@/context/xion-context';
 
@@ -115,7 +115,7 @@ function JobCard() {
 
 export default function Page() {
   const router = useRouter();
-  const { isNewFreelanceUser } = useAuth();
+  const { isNewFreelanceUser } = useAuthContext();
   const { address } = useXionWallet();
 
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function Page() {
 
     freelancer_profile.then((res) => {
       if (res) {
-        router.push(ApplicationRoutes.FREELANCER_DASHBOARD);
+        router.push(ApplicationRoutes.FREELANCER_BOUNTY);
       }
       if (!res && isNewFreelanceUser) {
         router.push(ApplicationRoutes.FREELANCER_SETUP);

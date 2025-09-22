@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Search,
   Filter,
@@ -15,12 +15,52 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useXionWallet } from '@/context/xion-context';
+import { useRouter } from 'next/navigation';
+import { useAuthContext } from '@/context/auth-context';
+import { supabase } from '@/lib/supabase';
+import { ApplicationRoutes } from '@/config/routes';
 
 const BountyPlatform = () => {
   const [selectedBounty, setSelectedBounty] = useState(null);
   const [showSubmissionModal, setShowSubmissionModal] = useState(false);
   const [activeTab, setActiveTab] = useState('All');
   const { accessToken } = useAuth();
+  const router = useRouter();
+  const { isNewFreelanceUser } = useAuthContext();
+  const { address } = useXionWallet();
+
+  useEffect(() => {
+    const fetchFreelancerProfile = async () => {
+      if (!address) {
+        return;
+      }
+
+      const { data: freelancer_profiles, error } = await supabase
+        .from('freelancer_profiles')
+        .select('*')
+        .eq('wallet_address', address);
+
+      if (error) {
+        console.error('Error fetching freelancer profile:', error);
+      } else {
+        console.log('Freelancer profile:', freelancer_profiles);
+      }
+      return freelancer_profiles;
+    };
+
+    const freelancer_profile = fetchFreelancerProfile();
+
+    freelancer_profile.then((res) => {
+      if (res) {
+        router.push(ApplicationRoutes.FREELANCER_BOUNTY);
+      }
+      if (!res && isNewFreelanceUser) {
+        router.push(ApplicationRoutes.FREELANCER_SETUP);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNewFreelanceUser, router]);
 
   const tabs = ['All', 'UI/UX', 'Content', 'Graphic', 'Development', 'Others'];
 
@@ -72,8 +112,6 @@ const BountyPlatform = () => {
       earned: '10k XION',
     },
   ];
-
-  console.log('selected Bounty: ', selectedBounty);
 
   const fetchBounties = async () => {
     try {
