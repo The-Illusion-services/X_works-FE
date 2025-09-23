@@ -128,9 +128,9 @@ const SkillsDetails = ({
 
   return (
     <>
-      <div className="mt-32 px-5 mb-36">
+      <div className="mt-12 lg:px-5 mb-36">
         <div className="max-w-screen-lg mx-auto w-full">
-          <p className="font-circular font-bold text-[#7E8082]">{step - 1}/5</p>
+          <p className="font-circular font-bold text-[#7E8082]">{step}/5</p>
 
           <h1 className="font-poppins font-semibold text-2xl mt-1">
             <span className="text-[#7E8082]">Almost there!</span> What work are
@@ -148,8 +148,9 @@ const SkillsDetails = ({
 
           <form onSubmit={handleFormSubmit}>
             <div className="bg-white relative rounded-xl p-10 mt-9 pb-20">
-              <div className="w-full">
+              <div className="w-full flex flex-col">
                 <CustomMultiSelector />
+                <p className="text-sm mt-[5px] ml-auto">Max 5 skills</p>
               </div>
 
               <div className="mt-6">

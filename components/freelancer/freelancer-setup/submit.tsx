@@ -174,7 +174,7 @@ const SubmitDetails = ({
         <div className="max-w-screen-lg mx-auto w-full">
           <h1 className="font-poppins font-semibold text-[24px] mt-1">
             <span className="text-[#7E8082]">Looking great,</span>{' '}
-            {formData.fullname}!
+            {displayData.name}!
           </h1>
 
           <p className="text-[#7E8082] font-circular text-base max-w-screen-md">
@@ -186,8 +186,8 @@ const SubmitDetails = ({
             <div className="flex gap-x-[20px] flex-col lg:flex-row">
               <div className="flex flex-col gap-y-5">
                 {/* Profile Picture Section */}
-                <div className="rounded-lg items-center border-solid border-[#E4E4E7] border-[1px] flex flex-col gap-y-3 lg:p-4 py-4 px-2">
-                  <div className="relative">
+                <div className="rounded-lg items-center border-solid border-[#E4E4E7] border-[1px] flex flex-col lg:p-4 py-4 px-2">
+                  <div className="relative overflow-hidden">
                     <Image
                       src={
                         formData.profile_picture instanceof File
@@ -201,14 +201,14 @@ const SubmitDetails = ({
                     />
                     <div
                       onClick={() => setActiveStep(5)}
-                      className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white rounded-full p-1 cursor-pointer"
+                      className="absolute bottom-[-3px] left-1/2 -translate-x-1/2 bg-white rounded-full p-1 cursor-pointer"
                     >
                       <PencilEdit className="w-4 h-4" />
                     </div>
                   </div>
 
-                  <p className="font-medium text-[#545756] font-circular text-[24px]">
-                    {formData.title || 'Your Name'}
+                  <p className="font-medium mt-[10px] text-[#545756] font-circular text-[24px]">
+                    {displayData.name || 'Your Name'}
                   </p>
 
                   <div className="flex space-x-2 items-center">
@@ -237,7 +237,7 @@ const SubmitDetails = ({
                       />
                     </svg>
                     <p className="text-[#7E8082] text-sm">
-                      {formData.city}, {formData.state}
+                      {displayData.city}, {displayData.country}
                     </p>
                   </div>
                 </div>
@@ -282,7 +282,7 @@ const SubmitDetails = ({
 
               <div className="flex-1">
                 {/* Work Type Section */}
-                <div className="hidden rounded-lg border border-[#E4E4E7] p-4 lg:p-4 py-4 px-2">
+                <div className="rounded-lg border border-[#E4E4E7] p-4 lg:p-4 py-4 px-2">
                   <div className="flex justify-between mb-2 items-center">
                     <p className="font-medium text-[#545756] font-circular text-lg">
                       Work Type
@@ -295,9 +295,11 @@ const SubmitDetails = ({
                     </div>
                   </div>
                   <div className="text-[#7E8082] text-sm font-circular space-y-1">
-                    <p>Category: {formData.category || 'Not specified'}</p>
+                    <p>
+                      Category: {displayData.Workcategory || 'Not specified'}
+                    </p>
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {formData.specialities?.map((speciality, index) => (
+                      {displayData.specialties?.map((speciality, index) => (
                         <span
                           key={index}
                           className="bg-[#F4F4F5] text-[#545756] px-3 py-1 rounded-full text-sm"
@@ -323,7 +325,7 @@ const SubmitDetails = ({
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.skills?.map((skill, index) => (
+                    {displayData.skills?.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-[#F4F4F5] text-[#545756] px-4 py-1 rounded-full text-[14px] font-medium"

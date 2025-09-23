@@ -69,9 +69,9 @@ const RateDetails = ({ handleBack, handleNext, step }: RateDetailsProps) => {
 
   return (
     <>
-      <main className="mt-32 px-5">
+      <main className="mt-12 lg:px-5">
         <div className="max-w-screen-lg mx-auto w-full">
-          <p className="font-circular font-bold text-[#7E8082]">{step - 1}/5</p>
+          <p className="font-circular font-bold text-[#7E8082]">{step}/5</p>
 
           <h1 className="font-poppins font-semibold text-[32px] mt-1">
             <span className="text-[#7E8082]">Now </span>set your hourly rate

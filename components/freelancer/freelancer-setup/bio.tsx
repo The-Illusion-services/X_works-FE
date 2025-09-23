@@ -89,9 +89,9 @@ const BioDetails = ({ handleBack, handleNext, step }: BioDetailsProps) => {
 
   return (
     <>
-      <main className="mt-32 px-5 mb-36">
+      <main className="mt-12 lg:px-5 mb-36">
         <div className="max-w-screen-lg mx-auto w-full">
-          <p className="font-circular font-bold text-[#7E8082]">{step - 1}/5</p>
+          <p className="font-circular font-bold text-[#7E8082]">{step}/5</p>
 
           <h1 className="font-poppins font-semibold text-[32px] mt-1">
             <span className="text-[#7E8082]">Great! </span>Now, create a bio to
@@ -154,7 +154,7 @@ const BioDetails = ({ handleBack, handleNext, step }: BioDetailsProps) => {
               <Button
                 type="button"
                 onClick={handleBack}
-                className="flex hover:bg-white/80 items-center space-x-3 text-primary bg-transparent border border-primary"
+                className="flex hover:bg-white/80 flex-1 lg:flex-0 h-[48px] items-center space-x-3 bg-transparent text-primary border border-primary"
               >
                 <LucideChevronLeft />
                 <p className="">Back</p>

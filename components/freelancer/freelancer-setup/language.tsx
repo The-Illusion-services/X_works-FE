@@ -18,9 +18,8 @@ import {
 import { useFormContext } from 'react-hook-form';
 import { LucideChevronLeft, LucideChevronRight } from 'lucide-react';
 import { Button } from '../../ui/button';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Text } from '@radix-ui/themes';
-import { Input } from '../../ui/input';
 
 type LanguageDetailsProps = {
   handleBack: () => void;
@@ -35,9 +34,6 @@ const LanguageDetails = ({
 }: LanguageDetailsProps) => {
   const { control, watch, setValue } = useFormContext<StepperFormValues>();
 
-  const [additionalLanguage, setAdditionalLanguage] = useState('');
-  const [additionalFluency, setAdditionalFluency] = useState('');
-
   // Watch for changes
   const englishFluency = watch('englishFluency');
 
@@ -48,14 +44,6 @@ const LanguageDetails = ({
     const savedData = JSON.parse(
       localStorage.getItem('freelancerOnboardingData') || '{}',
     );
-
-    if (savedData.additionalLanguage) {
-      setAdditionalLanguage(savedData.additionalLanguage);
-    }
-
-    if (savedData.additionalFluency) {
-      setAdditionalFluency(savedData.additionalFluency);
-    }
 
     if (savedData.englishFluency) {
       setValue('englishFluency', savedData.englishFluency);
@@ -70,8 +58,6 @@ const LanguageDetails = ({
 
     const updatedData = {
       ...existingData,
-      additionalLanguage,
-      additionalFluency,
       englishFluency: englishFluency || '',
     };
 
@@ -83,7 +69,7 @@ const LanguageDetails = ({
       'freelancerOnboardingData',
       JSON.stringify(updatedData),
     );
-  }, [additionalLanguage, additionalFluency, englishFluency]);
+  }, [englishFluency]);
 
   const handleNextWithSave = () => {
     // Final save before proceeding
@@ -93,8 +79,6 @@ const LanguageDetails = ({
 
     const updatedData = {
       ...existingData,
-      additionalLanguage,
-      additionalFluency,
       englishFluency: englishFluency || '',
     };
 
@@ -142,7 +126,7 @@ const LanguageDetails = ({
                   name="englishFluency"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#545756] text-base font-normal font-circular mt-[20px] lg:mt-0 font-medium">
+                      <FormLabel className="text-[#545756] text-base font-normal font-circular mt-[20px] lg:mt-0">
                         Fluency
                       </FormLabel>
                       <Select
@@ -170,65 +154,6 @@ const LanguageDetails = ({
                     </FormItem>
                   )}
                 />
-              </div>
-            </div>
-
-            {/* Additional Language Input */}
-            <div className="w-full flex-col md:flex-row flex justify-between items-baseline">
-              <div className="flex font-circular flex-col gap-y-1 lg:gap-y-3">
-                <FormLabel className="text-[#545756] text-base font-normal font-circular font-medium">
-                  Additional Language
-                </FormLabel>
-                <Text className="" color={'gray'}>
-                  Add another language you speak
-                </Text>
-              </div>
-
-              <div className="w-full md:w-max">
-                <FormItem>
-                  <FormLabel className="text-[#545756] text-base font-normal font-circular mt-[20px] lg:mt-0 font-medium">
-                    Language Name
-                  </FormLabel>
-                  <Input
-                    placeholder="Enter language name"
-                    value={additionalLanguage}
-                    onChange={(e) => setAdditionalLanguage(e.target.value)}
-                    className="h-12 bg-white placeholder:font-circular border-gray-300 font-circular placeholder:text-[#BEBEBE]"
-                  />
-                </FormItem>
-              </div>
-            </div>
-
-            {/* Fluency Level for Additional Language */}
-            <div className="w-full flex-col md:flex-row flex justify-between items-baseline">
-              <div className="flex font-circular flex-col gap-y-1 lg:gap-y-3 invisible">
-                {/* Empty spacer to maintain layout */}
-                <Text weight={'medium'}>Spacer</Text>
-                <Text className="" color={'gray'}>
-                  Spacer
-                </Text>
-              </div>
-
-              <div className="w-full md:w-max">
-                <FormItem>
-                  <FormLabel className="text-[#545756] text-base font-normal font-circular mt-[20px] lg:mt-0 font-medium">
-                    Fluency Level
-                  </FormLabel>
-                  <Select
-                    value={additionalFluency}
-                    onValueChange={setAdditionalFluency}
-                  >
-                    <SelectTrigger className="bg-transparent w-full md:min-w-44 placeholder:font-circular border-gray-300 font-circular placeholder:text-[#BEBEBE] !h-12">
-                      <SelectValue placeholder="Select fluency level" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white text-[#545756]">
-                      <SelectItem value="fluent">Fluent</SelectItem>
-                      <SelectItem value="proficient">Proficient</SelectItem>
-                      <SelectItem value="basic">Basic</SelectItem>
-                      <SelectItem value="native">Native</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
               </div>
             </div>
 

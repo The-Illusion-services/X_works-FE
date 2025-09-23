@@ -208,11 +208,7 @@ const Speciality = ({ handleNext, step }: SpecialityProps) => {
               <div className="absolute flex items-center bottom-5 right-5 font-circular font-medium space-x-3">
                 <Button
                   type="submit"
-                  // onClick={(e) => {
-                  //   e.preventDefault();
-                  //   handleNext();
-                  // }}
-                  className="flex items-center space-x-3 bg-primary text-white"
+                  className="flex flex-1 lg:flex-0 h-[48px] items-center space-x-3 bg-primary text-white"
                 >
                   <p className="">Next</p>
                   <LucideChevronRight />
